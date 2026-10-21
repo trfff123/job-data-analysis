@@ -14,10 +14,11 @@
 | 学什么技能最值？    | SQL/Python 打底，**Hadoop/Spark 是词频 Top10 仅有的具体大数据技术栈** |
 | 投哪个方向？      | 数据开发/工程（供给 45%）；**避开算法岗（大专可报 0%）**                   |
 
-![图1 学历双轴图](charts/chart1_edu.png)
-![图2 经验价格曲线](charts/chart2_exp.png)
-![图3 技能词频](charts/chart3_tags.png)
-![图4 岗位类别画像](charts/chart4_category.png)
+![图1 学历双轴图](chart1_edu.png)
+![图2 经验价格曲线](chart2_exp.png)
+![图3 技能词频](chart3_tags.png)
+![图4 岗位类别画像](chart4_category.png)
+
 
 ## 完整报告
 
