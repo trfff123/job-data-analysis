@@ -100,19 +100,19 @@
 
 红色为考研与出国——这两类人尚未进入就业市场，「实际薪资」不应存在却全部有值。这张图同时是去向分布和数据矛盾的可视化。
 
-![毕业去向构成与对应薪资水平](figures/fig01-destination-and-salary.png)
+![毕业去向构成与对应薪资水平](./fig01-destination-and-salary.png)
 
 **专业差异有多少是噪声**
 
 每个点为专业均值，橙色横线为 95% 置信区间。120 组两两比较中 52% 的区间重叠，意味着这些专业的薪资差距无法与随机波动区分。
 
-![专业薪资均值与95%置信区间](figures/fig05-major-confidence-interval.png)
+![专业薪资均值与95%置信区间](./fig05-major-confidence-interval.png)
 
 **城市：城际差异 vs 城内离散**
 
 所有城市的箱体都横跨全样本中位数线。城际均值极差 4,295 元，而单城内中间 50% 的人横跨 8,775 元。
 
-![各城市薪资分布](figures/fig07-city-dispersion.png)
+![各城市薪资分布](./fig07-city-dispersion.png)
 
 <details>
 
@@ -222,5 +222,7 @@ python src/report_figs_graduate.py  # 5. 报告配图
 
 ---
 
-<div align="center">   <sub>本仓库数据经检验具有程序生成特征，报告中的金额与比例仅用于方法演示，不代表真实就业市场水平。</sub>  
+<div align="center">
+   <sub>本仓库数据经检验具有程序生成特征，报告中的金额与比例仅用于方法演示，不代表真实就业市场水平。</sub>
+  
 </div>
