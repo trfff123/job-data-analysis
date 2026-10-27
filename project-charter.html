@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>高校毕业生就业数据统计分析 · 项目立项方案</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231e3f6b'/%3E%3Crect x='8' y='17' width='4' height='8' fill='%23ffffff'/%3E%3Crect x='14' y='12' width='4' height='13' fill='%23ffffff'/%3E%3Crect x='20' y='7' width='4' height='18' fill='%23b45309'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --ink:#161b26;
+    --ink-2:#4a5568;
+    --ink-3:#8a94a6;
+    --line:#e4e8ef;
+    --bg:#f6f7f9;
+    --card:#ffffff;
+    --accent:#b45309;
+    --accent-soft:#fdf6f1;
+    --navy:#1e3f6b;
+    --navy-soft:#eef2f9;
+    --mono:ui-monospace,"SF Mono",Consolas,"Courier New",monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.85 "Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:940px;margin:0 auto;padding:54px 34px 88px}
+
+  /* ---------- header ---------- */
+  .kicker{
+    display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.14em;
+    color:var(--accent);text-transform:uppercase;
+  }
+  h1{font-size:31px;line-height:1.35;letter-spacing:-.4px;margin:12px 0 10px;font-weight:700}
+  .sub{color:var(--ink-2);font-size:15px;margin:0;max-width:660px}
+  .meta{display:flex;flex-wrap:wrap;gap:34px;margin-top:26px;padding-top:18px;
+    border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3)}
+  .meta span b{display:block;color:var(--ink);font-weight:600;font-size:13px;margin-top:3px;letter-spacing:.01em}
+
+  /* ---------- headings ---------- */
+  h2{font-size:19.5px;line-height:1.5;margin:56px 0 0;font-weight:700;
+     display:flex;align-items:baseline;gap:11px;letter-spacing:-.2px}
+  h2 .num{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.06em;flex:none}
+  h2 + .rule{height:1px;background:var(--line);margin:12px 0 0}
+  h3{font-size:15px;font-weight:700;margin:26px 0 6px;color:var(--ink)}
+  p{margin:13px 0;color:var(--ink-2)}
+  p strong,li strong{color:var(--ink);font-weight:600}
+
+  /* ---------- blocks ---------- */
+  .callout{
+    background:var(--accent-soft);border-left:3px solid var(--accent);
+    border-radius:0 9px 9px 0;padding:16px 22px;margin:20px 0;
+  }
+  .callout .label{
+    font-size:11.5px;font-weight:700;letter-spacing:.1em;color:var(--accent);
+    display:block;margin-bottom:5px;
+  }
+  .callout p{margin:0;color:#5c4326;font-size:14.5px}
+  .callout p + p{margin-top:8px}
+
+  .quote{
+    background:#fff;border:1px solid var(--line);border-radius:11px;
+    padding:18px 22px;margin:18px 0;font-size:14.5px;color:var(--ink-2);
+  }
+  .quote .tag-inline{font-weight:700;color:var(--navy)}
+
+  /* ---------- tables ---------- */
+  .table-wrap{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:20px 0}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-weight:600;color:var(--ink-3);font-size:11.5px;letter-spacing:.05em;
+     background:#f4f6fa;padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+  td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-2);line-height:1.7}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--ink);font-weight:600}
+  tr.grp td{
+    background:#fbfcfd;font-size:11.5px;font-weight:700;letter-spacing:.09em;
+    color:var(--navy);padding:8px 14px;border-bottom:1px solid var(--line);
+  }
+  code,.code{font-family:var(--mono);font-size:12.5px;background:#f2f4f8;
+    padding:1px 5px;border-radius:4px;color:#334155}
+
+  /* ---------- flow ---------- */
+  .flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:22px 0}
+  .step{background:#fff;border:1px solid var(--line);border-radius:11px;padding:15px 14px 16px;position:relative}
+  .step .n{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--accent);letter-spacing:.08em}
+  .step h4{margin:7px 0 9px;font-size:13.5px;font-weight:700;line-height:1.4}
+  .step p{margin:0;font-size:12px;line-height:1.65;color:var(--ink-3)}
+  .step p b{color:var(--ink-2);font-weight:600}
+  .step p + p{margin-top:6px}
+  .step.core{border-color:#d8c3a5;background:#fffdfa}
+
+  /* ---------- Q&A ---------- */
+  .qa{background:#fff;border:1px solid var(--line);border-radius:12px;
+      padding:18px 22px;margin:14px 0}
+  .qa .head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:2px}
+  .qa h4{margin:0;font-size:14.5px;font-weight:700;line-height:1.5}
+  .qa .pill{font-size:10.5px;font-weight:700;letter-spacing:.05em;
+    padding:2px 8px;border-radius:20px;background:var(--accent);color:#fff;flex:none}
+  .qa .pill.alt{background:#e8ecf3;color:#526078}
+  .qa dl{margin:9px 0 0;display:grid;grid-template-columns:76px 1fr;gap:3px 12px;font-size:13px}
+  .qa dt{font-size:11.5px;font-weight:700;color:var(--ink-3);letter-spacing:.03em;padding-top:2px}
+  .qa dd{margin:0;color:var(--ink-2);line-height:1.75}
+
+  /* ---------- limits ---------- */
+  .limit{background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:4px 0;margin:20px 0;counter-reset:l}
+  .limit ol{margin:0;padding:0;list-style:none;counter-reset:l}
+  .limit li{counter-increment:l;position:relative;padding:15px 24px 15px 56px;
+    border-bottom:1px solid var(--line);font-size:13px;color:var(--ink-2);line-height:1.75}
+  .limit li:last-child{border-bottom:none}
+  .limit li::before{
+    content:counter(l,decimal-leading-zero);position:absolute;left:24px;top:15px;
+    font-family:var(--mono);font-size:11.5px;font-weight:700;color:#c3cbd8;
+  }
+  .limit li b{display:block;color:var(--ink);font-weight:600;font-size:13.5px;margin-bottom:3px}
+  .limit li em{font-style:normal;color:var(--navy);font-weight:600}
+
+  /* ---------- resume ---------- */
+  .resume{background:#fff;border:1px solid var(--line);border-left:3px solid var(--navy);
+    border-radius:0 11px 11px 0;padding:18px 22px;margin:14px 0;font-size:13.5px;
+    line-height:1.85;color:var(--ink-2)}
+  .resume .ttl{display:block;font-weight:700;font-size:14px;color:var(--ink);margin-bottom:6px}
+  .ph{background:#fff1e6;color:#a2451b;font-weight:600;padding:1px 5px;
+    border-radius:4px;font-size:12.5px;font-family:var(--mono);white-space:nowrap}
+  .note{font-size:12px;color:var(--ink-3);margin:8px 0 0;line-height:1.7}
+
+  .tagrow{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}
+  .tag{background:var(--navy-soft);color:#2b4a7d;font-size:11.5px;font-weight:500;
+    padding:3px 10px;border-radius:20px}
+  .tag.warn{background:#fdf0e7;color:#a2451b}
+
+  footer{margin-top:62px;padding-top:20px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--ink-3);line-height:1.9}
+
+  @media (max-width:620px){
+    .wrap{padding:36px 20px 60px}
+    h1{font-size:24px}
+    .meta{gap:20px}
+    .qa dl{grid-template-columns:1fr;gap:0}
+    .qa dt{margin-top:8px}
+  }
+  @media print{
+    body{background:#fff}
+    .wrap{max-width:none;padding:0}
+    h2{page-break-after:avoid}
+    .qa,.limit,.step,.resume{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="kicker">Project Proposal · 立项文档</span>
+    <h1>高校毕业生就业数据统计分析</h1>
+    <p class="sub">基于多源公开数据的专业—行业—区域就业结构分析，为应届生专业选择与求职区域决策提供可溯源的数据参考。</p>
+    <div class="meta">
+      <span>项目类型<b>个人独立分析项目</b></span>
+      <span>当前阶段<b>立项 / 方案设计</b></span>
+      <span>技术链路<b>采集 → 治理 → EDA → 可视化 → 结论</b></span>
+      <span>数据性质<b>全部公开、可溯源</b></span>
+    </div>
+  </header>
+
+  <!-- ===== 一 ===== -->
+  <h2><span class="num">01</span>项目背景与业务目标</h2>
+  <div class="rule"></div>
+
+  <h3>1.1 业务背景</h3>
+  <p>高校毕业生规模连续多年处于高位，而专业设置与市场需求之间的信息不对称长期存在。应届生在“选什么方向、去哪个城市、进哪个行业”这三个关键决策上，主要依赖经验判断和碎片化信息，缺少可核验的量化参考。</p>
+  <p>另一方面，教育部、各高校、国家统计局与第三方招聘平台每年产出大量公开就业数据，但这些数据分散在 PDF 报告、网页表格与年鉴 Excel 中：<strong>指标口径不一、统计时点不同、年份序列断裂、院校公开率参差不齐</strong>。直接把这些数字拼在一起做比较，会得出看似有据、实则错误的结论。</p>
+
+  <div class="callout">
+    <span class="label">核心业务问题</span>
+    <p>基于公开就业数据，回答：<strong>不同专业大类、行业与区域的毕业生去向落实情况与薪酬水平，呈现怎样的结构性差异？应届生应如何据此调整求职策略？</strong></p>
+    <p>项目的价值不在于“采集了多少条数据”，而在于<strong>把不可比的原始数字，转化成可比的口径统一指标，并据此给出可执行建议</strong>。</p>
+  </div>
+
+  <h3>1.2 明确不做的事（项目边界）</h3>
+  <p>立项阶段先划边界，比后期删需求更省成本：</p>
+  <div class="tagrow">
+    <span class="tag warn">不做个体薪资预测模型（样本量不支持）</span>
+    <span class="tag warn">不做高校 / 专业排行榜（维度单一、易被误用）</span>
+    <span class="tag warn">不采集非公开、需授权或含个人信息的数据</span>
+  </div>
+
+  <h3>1.3 三层目标（可验收）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th style="width:88px">层级</th><th style="width:44%">目标</th><th>可验收成果</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>业务层</strong></td>
+          <td>输出专业—行业—区域三维就业结构画像，识别结构性错配</td>
+          <td>3–5 条带数据证据的结论 + 可执行建议清单</td>
+        </tr>
+        <tr>
+          <td><strong>数据层</strong></td>
+          <td>整合 ≥4 类异构数据源，建成口径统一的毕业生就业指标宽表</td>
+          <td>宽表 + 口径映射字典 + 数据质量报告</td>
+        </tr>
+        <tr>
+          <td><strong>能力层</strong></td>
+          <td>完整走通采集→治理→分析→可视化→结论全链路并留下可复现代码</td>
+          <td>Git 仓库 + 可视化看板 + HTML 分析报告</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 二 ===== -->
+  <h2><span class="num">02</span>项目整体流程架构</h2>
+  <div class="rule"></div>
+
+  <p>采用五阶段流水线，每个阶段定义<strong>输入、动作、产出、质量门禁</strong>四要素。门禁未通过不进入下一阶段，避免错误数据污染下游结论。</p>
+
+  <div class="flow">
+    <div class="step">
+      <span class="n">S1</span>
+      <h4>数据采集</h4>
+      <p><b>动作</b> 网页表格抓取、PDF 报告解析、年鉴 Excel 下载</p>
+      <p><b>产出</b> 按数据源分目录落地的原始数据</p>
+      <p><b>门禁</b> 每条记录必须带 <code>source_url</code> + <code>fetch_time</code> + 原文页码</p>
+    </div>
+    <div class="step core">
+      <span class="n">S2</span>
+      <h4>清洗与口径治理</h4>
+      <p><b>动作</b> 字段标准化、口径映射、实体归一、缺失与异常处理</p>
+      <p><b>产出</b> 清洗层数据 + 口径映射字典 + 质量报告</p>
+      <p><b>门禁</b> 核心字段缺失率达标；口径映射覆盖率 100%，无法映射者标 <code>unknown</code> 并单独计数</p>
+    </div>
+    <div class="step">
+      <span class="n">S3</span>
+      <h4>EDA 探索分析</h4>
+      <p><b>动作</b> 分布、分组对比、时间趋势、交叉分析与相关性检验</p>
+      <p><b>产出</b> 分析笔记，每条结论附对应图表与数据切片</p>
+      <p><b>门禁</b> 结论必须能回溯到具体查询语句，不接受“看图说话”</p>
+    </div>
+    <div class="step">
+      <span class="n">S4</span>
+      <h4>可视化呈现</h4>
+      <p><b>动作</b> 静态图表 + 交互看板，统一视觉规范与图注</p>
+      <p><b>产出</b> 图集与看板，含图表说明文字</p>
+      <p><b>门禁</b> 每张图必须标注口径、样本量与数据截止时间</p>
+    </div>
+    <div class="step">
+      <span class="n">S5</span>
+      <h4>结论输出</h4>
+      <p><b>动作</b> 结构化写作：现象 → 证据 → 归因假设 → 建议 → 局限</p>
+      <p><b>产出</b> HTML 分析报告（作品集页面）+ 简历要点</p>
+      <p><b>门禁</b> 无数据支撑的判断一律删除或降级为“待验证假设”</p>
+    </div>
+  </div>
+
+  <h3>2.1 技术栈</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th style="width:110px">环节</th><th style="width:40%">工具</th><th>选型理由</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>采集</strong></td><td>Python：<code>requests</code> / <code>Playwright</code> / <code>pdfplumber</code> / <code>BeautifulSoup</code></td><td>覆盖静态页、动态渲染页与 PDF 三类形态，成本低、可控</td></tr>
+        <tr><td><strong>存储</strong></td><td>SQLite（过程）/ MySQL（如需要）</td><td>轻量、零部署，便于在简历中体现 SQL 能力</td></tr>
+        <tr><td><strong>治理与分析</strong></td><td><code>pandas</code> + SQL 窗口函数</td><td>分组聚合、透视、缺失处理；SQL 侧体现分析思维而非纯脚本</td></tr>
+        <tr><td><strong>可视化</strong></td><td>Power BI（看板）+ ECharts / Plotly（网页图）</td><td>看板展示交互能力，网页图便于嵌入作品集</td></tr>
+        <tr><td><strong>工程</strong></td><td>Git + 目录规范 + 日志</td><td>体现可复现性与工程习惯，面试可直接演示</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>2.2 关键治理点：口径对齐（本项目核心难点）</h3>
+  <p>这是整个项目最有技术含量的部分，也是与其他“爬完就画图”的学生项目拉开差距的地方。</p>
+
+  <div class="quote">
+    <p><span class="tag-inline">问题 A · 就业率口径变更。</span>教育部自 2021 年起以“毕业去向落实率”替代原有“就业率”表述，两者统计范围并不等价；各高校的统计截止时点存在 <code>8月31日</code> 与 <code>12月31日</code> 两种，分母是否包含升学、是否计入灵活就业与自由职业也不一致。</p>
+    <p><span class="tag-inline">处理。</span>在宽表中新增 <code>metric_definition</code>（指标定义）、<code>cutoff_date</code>（统计截止时点）、<code>includes_further_study</code>（是否含升学）、<code>includes_flexible</code>（是否含灵活就业）四个口径字段。<strong>跨口径数据禁止直接比较</strong>，仅在四字段完全一致的子集内做横向对比，其余仅做同口径纵向趋势。</p>
+  </div>
+
+  <div class="quote">
+    <p><span class="tag-inline">问题 B · 青年失业率口径调整。</span>16—24 岁劳动力失业率的统计口径在近年发生过调整（现行口径不含在校生），早期与近期数据不可直接连线。</p>
+    <p><span class="tag-inline">处理。</span>宏观背景指标做分段标注，趋势图中以断点或不同线型呈现，图注明确写出“口径变更，前后不连续”。</p>
+  </div>
+
+  <div class="quote">
+    <p><span class="tag-inline">问题 C · 实体名称不统一。</span>同一所高校存在全称、简称、曾用名；专业名称在本科目录与职业教育目录中分属不同层级；行业名称在国家标准分类与各校自拟表述间差异大。</p>
+    <p><span class="tag-inline">处理。</span>建立三张映射表（高校 / 专业 / 行业），专业按“门类—专业类—专业”三级归一，映射表随清洗过程持续补全，最终作为独立交付物输出。</p>
+  </div>
+
+  <!-- ===== 三 ===== -->
+  <h2><span class="num">03</span>数据源说明</h2>
+  <div class="rule"></div>
+
+  <p>数据源按“权威性—颗粒度—可得性”三方面做分层组合：官方统计提供基准与年份序列，高校报告提供最细颗粒度，第三方调研做交叉校验，需求侧数据作为可选补充。</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th style="width:23%">数据源</th><th style="width:26%">主要内容</th><th style="width:22%">形态与获取方式</th><th>在本项目中的用途</th></tr>
+      </thead>
+      <tbody>
+        <tr class="grp"><td colspan="4">A 类 · 官方统计（权威、口径稳定、年度粒度）</td></tr>
+        <tr>
+          <td><strong>教育部《全国教育事业发展统计公报》</strong></td>
+          <td>毕业生总量、层次结构（研究生/本科/高职）、学科分布</td>
+          <td>网页 + PDF，公开可得</td>
+          <td>提供总体基数与年份序列，用于计算各项比例的分母</td>
+        </tr>
+        <tr>
+          <td><strong>国家统计局《中国统计年鉴》《中国劳动统计年鉴》</strong></td>
+          <td>分行业就业人员数、城镇非私营单位分行业平均工资</td>
+          <td>年鉴在线版 / Excel，公开可得</td>
+          <td>建立行业薪酬基准线与行业就业容量，与毕业生流向交叉</td>
+        </tr>
+        <tr>
+          <td><strong>国家统计局月度城镇调查失业率</strong></td>
+          <td>全国城镇调查失业率、16—24 岁劳动力失业率</td>
+          <td>网页数据表，需按口径分段处理</td>
+          <td>作为宏观景气背景，解释趋势变化的时点背景</td>
+        </tr>
+
+        <tr class="grp"><td colspan="4">B 类 · 高校微观数据（颗粒度最细，质量为项目主战场）</td></tr>
+        <tr>
+          <td><strong>各高校《毕业生就业质量年度报告》</strong></td>
+          <td>分学院/分专业毕业去向落实率、升学率、行业流向、地域流向、单位性质分布、部分公开薪酬</td>
+          <td>各校就业信息网 PDF，结构不统一，需解析与抽样</td>
+          <td><strong>项目主数据源</strong>，支撑专业级与院校级分析</td>
+        </tr>
+        <tr>
+          <td><strong>抽样策略</strong></td>
+          <td>—</td>
+          <td>按“双一流 / 普通本科 / 高职高专”分三档分层抽样，优先选择同一省份或同一行业特色院校</td>
+          <td>控制样本结构，避免结论被头部高校垄断；<strong>高职样本单独成组分析</strong></td>
+        </tr>
+
+        <tr class="grp"><td colspan="4">C 类 · 第三方调研（需求侧与主观感知，用于交叉验证）</td></tr>
+        <tr>
+          <td><strong>智联招聘《大学生就业力调研报告》<br>麦可思《中国大学生就业报告》</strong></td>
+          <td>求职偏好、期望薪资、offer 获取情况、能力自评</td>
+          <td>公开摘要版 PDF / 新闻稿</td>
+          <td>与供给侧数据交叉校验，识别“学校口径”与“学生感知”的偏差</td>
+        </tr>
+
+        <tr class="grp"><td colspan="4">D 类 · 需求侧对照（可选，视工期决定是否加入）</td></tr>
+        <tr>
+          <td><strong>公共招聘平台公开岗位信息</strong></td>
+          <td>按专业关键词抽样的岗位数、技能要求、薪资区间</td>
+          <td>网页，仅抓公开列表页，遵守 robots 与访问频率</td>
+          <td>计算“岗位需求 / 毕业生供给”比值，为专业错配提供需求侧证据</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>3.1 选源原则</h3>
+  <p>① 优先官方、可溯源，拒绝来源不明的二手转述数据；② 单一数据源不单独支撑结论，关键判断至少双源交叉；③ 每个数据源在立项阶段先做<strong>可得性小样本验证</strong>（下载 3–5 份实测解析成功率），不可行的源及时替换，而不是等到后期才发现解析不了。</p>
+
+  <div class="note">说明：上表为数据源清单与用途设计，具体样本院校数量与最终记录条数在数据采集完成后据实填写，不在立项阶段预设结论性数字。</div>
+
+  <!-- ===== 四 ===== -->
+  <h2><span class="num">04</span>预期分析问题</h2>
+  <div class="rule"></div>
+
+  <p>五个业务问题按“价值 × 可行性”排序，其中 <strong>Q1、Q3 为核心问题</strong>（结论最可能站得住），Q2、Q4、Q5 为支撑性问题，工期紧张时优先保证核心问题完成度。</p>
+
+  <div class="qa">
+    <div class="head"><span class="pill">核心</span><h4>Q1　专业结构性错配：哪些专业“好就业但薪酬低”，哪些“薪酬高但门槛高”？</h4></div>
+    <dl>
+      <dt>分析指标</dt><dd>毕业去向落实率、升学率、平均起薪（仅限公开院校）、行业集中度（前三大行业占比）</dd>
+      <dt>方法</dt><dd>按专业大类聚合后做分位数分组，构建“落实率 × 起薪”二维散点与四象限划分</dd>
+      <dt>产出</dt><dd>四象限图 + 错配专业清单（高落实低薪 / 低落实高薪 / 双高 / 双低）</dd>
+      <dt>业务价值</dt><dd>纠正“就业率高＝好专业”的朴素认知，为专业选择提供二维视角</dd>
+    </dl>
+  </div>
+
+  <div class="qa">
+    <div class="head"><span class="pill">核心</span><h4>Q3　地域流向与人才留存：毕业生都去哪了，留省率与什么有关？</h4></div>
+    <dl>
+      <dt>分析指标</dt><dd>留省就业率、流向 Top5 省份占比、省际流向矩阵、院校所在省份与就业省份的关系</dd>
+      <dt>方法</dt><dd>分层对比（按院校层次、按区域）+ 流向桑基图；计算流向集中度指标（HHI）</dd>
+      <dt>产出</dt><dd>区域流向桑基图 + 留省率分层对比 + 高流出院校特征描述</dd>
+      <dt>业务价值</dt><dd>直接支撑“应届生该去哪个城市”的决策，也可用于观察地方引才政策效果</dd>
+    </dl>
+  </div>
+
+  <div class="qa">
+    <div class="head"><span class="pill alt">支撑</span><h4>Q2　行业流向的三年变迁：哪些行业在扩大吸纳，哪些在收缩？</h4></div>
+    <dl>
+      <dt>分析指标</dt><dd>各行业流向占比（分年）、占比变化率、行业集中度</dd>
+      <dt>方法</dt><dd>构成比时间序列 + 变化率排序 + 堆叠面积图；与统计年鉴行业就业容量趋势对照</dd>
+      <dt>产出</dt><dd>行业流向堆叠面积图 + 上升/下降 Top5 行业清单</dd>
+      <dt>注意</dt><dd>行业分类各校自拟程度高，须先经映射表归一，否则趋势会被分类差异污染</dd>
+    </dl>
+  </div>
+
+  <div class="qa">
+    <div class="head"><span class="pill alt">支撑</span><h4>Q4　升学替代效应：升学率上升是否挤压了直接就业？不同层次院校差异如何？</h4></div>
+    <dl>
+      <dt>分析指标</dt><dd>升学率、直接就业率、待就业率（分院校层次、分年）</dd>
+      <dt>方法</dt><dd>结构变化分析，观察三项占比此消彼长的幅度；按院校层次分组对比</dd>
+      <dt>产出</dt><dd>去向结构变迁图 + 层次差异对比</dd>
+      <dt>边界</dt><dd><strong>仅描述相关关系，不做因果断言</strong>（升学与就业受宏观周期共同影响），此点在报告中明示</dd>
+    </dl>
+  </div>
+
+  <div class="qa">
+    <div class="head"><span class="pill alt">支撑</span><h4>Q5　高职高专与本科的就业结构差异（本人视角的差异化切入点）</h4></div>
+    <dl>
+      <dt>分析指标</dt><dd>去向落实率、行业分布、单位性质分布、升学率、起薪（若可得）</dd>
+      <dt>方法</dt><dd>分层对比 + 分布形态比较，重点看行业与单位性质的分布差异而非单一均值</dd>
+      <dt>产出</dt><dd>层次对比条形图 + 高职就业路径特征描述</dd>
+      <dt>差异化</dt><dd>同类学生项目极少单独分析高职样本，<strong>“高职院校公开率低”本身就是值得写进结论的数据发现</strong>，既是分析结论也是项目局限</dd>
+    </dl>
+  </div>
+
+  <!-- ===== 五 ===== -->
+  <h2><span class="num">05</span>项目局限性说明</h2>
+  <div class="rule"></div>
+
+  <p>局限性不是免责声明，而是结论的适用边界。以下七条将<strong>原样写入报告的“局限与声明”章节</strong>，并在涉及相应结论处做行内标注。</p>
+
+  <div class="limit">
+    <ol>
+      <li><b>薪酬数据缺失严重（最关键的局限）</b>多数高校就业质量报告不公开分专业薪酬，公开者多为区间值或均值，且未说明样本量与统计方法。<em>影响：薪酬维度只能做相对比较与趋势描述，不能输出任何绝对值结论，也无法做分位数分析。</em></li>
+      <li><b>就业率口径不统一，跨校跨年比较存在系统性偏差</b>统计截止时点（8 月 31 日 / 12 月 31 日）、分母定义、是否含升学与灵活就业均不一致。<em>影响：已通过口径字段隔离处理，但只能保证“同口径内可比”，无法完全还原真实差异。</em></li>
+      <li><b>数据自报，存在乐观偏差</b>报告由高校自行编制，存在美化动机，去向落实率有高估可能。<em>影响：绝对水平只能作参考，结论重心放在“相对排序与结构变化”上；可交叉校验的部分用第三方数据验证，无法校验处明确标注。</em></li>
+      <li><b>样本选择偏差：公开报告的高校并非随机样本</b>双一流与公办本科的公开率显著高于民办院校与高职高专。<em>影响：样本对“头部高校”存在系统性倾斜，全样本均值不能代表全国毕业生整体；处理方式是按层次分层并单独报告高职结论，同时把“公开率差异”本身作为数据发现输出。</em></li>
+      <li><b>以横截面数据为主，缺乏个体追踪</b>数据粒度止于“院校—专业—年份”聚合层，没有个体层面的追踪记录。<em>影响：无法回答“某专业毕业三年后的薪酬增长”这类纵向问题，也不支持因果推断（如“读研是否提升收入”）。</em></li>
+      <li><b>灵活就业与自由职业的认定模糊</b>该类别内部异质性极大（自媒体、零工、挂靠等），被统一计入“落实”会抬高整体落实率。<em>影响：涉及该类别时单独列出占比并加注说明，不与其他去向合并解读。</em></li>
+      <li><b>数据时效与可得性风险</b>部分高校逐年下线历史报告，或改为图片型 PDF 需 OCR，采集成本不可控。<em>影响：设定最小可行样本量，无法获取的院校记录为“缺失”而非直接删除，缺失情况在质量报告中统计呈现。</em></li>
+    </ol>
+  </div>
+
+  <div class="callout">
+    <span class="label">一句话总结局限</span>
+    <p>本项目能回答的是<strong>“公开数据所反映的结构性差异与变化趋势”</strong>，不能回答<strong>“某个具体专业、具体学校的真实薪酬水平”</strong>。所有结论均限定在公开样本范围内，不外推至全国全量。</p>
+  </div>
+
+  <!-- ===== 六 ===== -->
+  <h2><span class="num">06</span>交付物清单</h2>
+  <div class="rule"></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th style="width:36px">#</th><th style="width:34%">交付物</th><th>作用</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><strong>数据源清单与采集脚本</strong></td><td>可复现，证明采集能力与合规意识</td></tr>
+        <tr><td>2</td><td><strong>清洗后指标宽表</strong></td><td>项目核心数据资产，含完整口径字段</td></tr>
+        <tr><td>3</td><td><strong>口径映射字典（高校 / 专业 / 行业三表）</strong></td><td>体现数据治理能力，面试最易展开的点</td></tr>
+        <tr><td>4</td><td><strong>数据质量报告</strong></td><td>缺失率、异常值、口径冲突统计，证明严谨性</td></tr>
+        <tr><td>5</td><td><strong>EDA 分析笔记</strong></td><td>记录分析路径与判断依据，非成品但可展示思维</td></tr>
+        <tr><td>6</td><td><strong>可视化看板 / 图集</strong></td><td>作品集主视觉，含图注与口径标注</td></tr>
+        <tr><td>7</td><td><strong>HTML 分析报告</strong></td><td>作品集页面，含结论、建议与局限声明</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 七 ===== -->
+  <h2><span class="num">07</span>简历与作品集文案（模板）</h2>
+  <div class="rule"></div>
+
+  <p>以下为可直接使用的表述框架。<span class="ph">橙色占位</span>部分须在项目结项后<strong>以实际结果替换</strong>，不得事先填写，否则面试追问数据来源时会失信。</p>
+
+  <h3>7.1 简历版（约 4 行）</h3>
+  <div class="resume">
+    <span class="ttl">高校毕业生就业数据统计分析｜个人项目｜<span class="ph">2026.11–2027.02</span></span>
+    针对应届生专业选择与求职区域决策的信息不对称问题，独立完成从数据采集到结论输出的全链路分析。整合教育部统计公报、<span class="ph">N</span> 所高校就业质量年度报告、统计年鉴共 <span class="ph">4</span> 类异构数据源，使用 Python（requests / pdfplumber / pandas）完成网页与 PDF 解析，产出 <span class="ph">XXXX</span> 条专业级标准化记录；设计「口径映射字典」解决各校就业率统计时点与分母定义不一致导致的数据不可比问题，核心字段缺失率控制在 <span class="ph">X%</span> 以内；基于 Power BI / ECharts 输出专业—行业—区域三维就业画像，识别出 <span class="ph">N</span> 类高落实率低薪酬的错配专业，结论以 HTML 报告形式公开。
+  </div>
+
+  <h3>7.2 作品集版（分段式）</h3>
+  <div class="resume">
+    <span class="ttl">项目背景</span>
+    高校毕业生规模持续高位，而公开就业数据分散于官方公报、高校报告与年鉴中，口径不一、格式各异，导致应届生难以据此做出可靠判断。<br><br>
+    <span class="ttl">我的工作</span>
+    <strong>① 数据采集</strong>：用 Python 抓取统计年鉴网页表格，用 pdfplumber 批量解析高校就业质量报告，以「来源 URL + 抓取时间 + 页码」三元组保证可溯源。<br>
+    <strong>② 数据治理</strong>：发现各校“就业率”存在统计截止时点与分母定义两类不一致，建立 <code>metric_definition</code> / <code>cutoff_date</code> / <code>includes_further_study</code> / <code>includes_flexible</code> 四个口径字段进行隔离，禁止跨口径比较；另建高校、专业、行业三张映射表完成实体归一。<br>
+    <strong>③ 分析呈现</strong>：围绕专业错配、区域流向、行业变迁、升学替代、层次差异五个问题完成 EDA，输出四象限图、桑基图与结构变迁图。<br><br>
+    <span class="ttl">关键结论</span>
+    <span class="ph">结项后填写，每条结论必须附数据证据</span><br><br>
+    <span class="ttl">局限声明</span>
+    薪酬数据公开度低、就业率口径不统一、样本偏向公开率高的头部高校，结论仅适用于公开样本范围，不外推全国全量。
+  </div>
+
+  <h3>7.3 面试可能被追问的三个问题（提前准备）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:44%">面试官可能问</th><th>应答要点</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>“各校就业率口径都不一样，你的分析凭什么可信？”</td>
+          <td>说明四个口径字段的设计与隔离规则，强调只在同口径子集内比较，且结论重心放在相对排序而非绝对值</td>
+        </tr>
+        <tr>
+          <td>“公开报告有美化成分，你怎么处理？”</td>
+          <td>用第三方调研与统计年鉴交叉校验；无法校验处标注；结论避免使用绝对水平</td>
+        </tr>
+        <tr>
+          <td>“样本偏向好学校，结论有意义吗？”</td>
+          <td>承认偏差，说明分层抽样与高职单独成组的处理，并把“公开率差异”本身作为发现输出</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    本文档为项目立项阶段的方案设计，所列数据源、分析方法与局限均需在实施过程中按实际情况修订。<br>
+    所有分析结论仅基于公开可得数据，不涉及任何个人隐私信息；采集行为遵守目标网站 robots 协议与访问频率限制。
+  </footer>
+
+</div>
+<style>
+#back-home{position:fixed;right:24px;bottom:24px;z-index:9999;
+  display:inline-flex;align-items:center;gap:7px;
+  background:#1e3f6b;color:#fff;text-decoration:none;
+  font:600 13px/1 "Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  padding:11px 17px;border-radius:999px;letter-spacing:.02em;
+  box-shadow:0 4px 16px rgba(30,63,107,.28);
+  transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+#back-home:hover{transform:translateY(-2px);background:#265083;
+  box-shadow:0 8px 24px rgba(30,63,107,.36)}
+#back-home .ar{font-size:14px;line-height:1;opacity:.85}
+@media print{#back-home{display:none}}
+@media (max-width:600px){#back-home{right:14px;bottom:14px;padding:10px 14px;font-size:12px}}
+</style>
+<a href="index.html" id="back-home" title="返回作品集首页"><span class="ar">&#8592;</span>作品集首页</a>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>数据集清单 · 高校毕业生就业数据统计分析</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231e3f6b'/%3E%3Crect x='8' y='17' width='4' height='8' fill='%23ffffff'/%3E%3Crect x='14' y='12' width='4' height='13' fill='%23ffffff'/%3E%3Crect x='20' y='7' width='4' height='18' fill='%23b45309'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --ink:#161b26; --ink-2:#4a5568; --ink-3:#8a94a6;
+    --line:#e4e8ef; --bg:#f6f7f9; --card:#fff;
+    --accent:#b45309; --accent-soft:#fdf6f1;
+    --navy:#1e3f6b; --navy-soft:#eef2f9;
+    --green:#166534; --green-soft:#f0f7f2;
+    --red:#b91c1c; --red-soft:#fdf2f2;
+    --mono:ui-monospace,"SF Mono",Consolas,"Courier New",monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.85 "Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:52px 34px 84px}
+
+  .kicker{font-size:11.5px;font-weight:700;letter-spacing:.14em;color:var(--accent)}
+  h1{font-size:29px;line-height:1.35;letter-spacing:-.4px;margin:12px 0 10px;font-weight:700}
+  .sub{color:var(--ink-2);font-size:14.5px;margin:0;max-width:700px}
+  .meta{display:flex;flex-wrap:wrap;gap:32px;margin-top:24px;padding-top:16px;
+    border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3)}
+  .meta span b{display:block;color:var(--ink);font-weight:600;font-size:13px;margin-top:3px}
+
+  h2{font-size:19px;line-height:1.5;margin:52px 0 0;font-weight:700;
+     display:flex;align-items:baseline;gap:11px;letter-spacing:-.2px}
+  h2 .num{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:700;flex:none}
+  .rule{height:1px;background:var(--line);margin:12px 0 0}
+  p{margin:13px 0;color:var(--ink-2)}
+  p strong,li strong{color:var(--ink);font-weight:600}
+
+  .verdict{background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:6px 0;margin:22px 0}
+  .verdict ol{margin:0;padding:0;list-style:none;counter-reset:v}
+  .verdict li{counter-increment:v;position:relative;padding:14px 24px 14px 56px;
+    border-bottom:1px solid var(--line);font-size:14px;color:var(--ink-2);line-height:1.8}
+  .verdict li:last-child{border-bottom:none}
+  .verdict li::before{content:counter(v);position:absolute;left:24px;top:14px;
+    font-family:var(--mono);font-size:12px;font-weight:700;color:#c3cbd8}
+  .verdict li b{color:var(--ink);font-weight:600}
+
+  .table-wrap{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:20px 0}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{text-align:left;font-weight:600;color:var(--ink-3);font-size:11.5px;letter-spacing:.05em;
+     background:#f4f6fa;padding:10px 13px;border-bottom:1px solid var(--line);white-space:nowrap}
+  td{padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-2);line-height:1.7}
+  tr:last-child td{border-bottom:none}
+  td strong{color:var(--ink);font-weight:600}
+  tr.grp td{background:#fbfcfd;font-size:11.5px;font-weight:700;letter-spacing:.08em;
+    color:var(--navy);padding:8px 13px}
+  code{font-family:var(--mono);font-size:12px;background:#f2f4f8;padding:1px 5px;
+    border-radius:4px;color:#334155;word-break:break-all}
+  a{color:var(--navy);text-decoration:none;border-bottom:1px solid #c7d3e6;word-break:break-all}
+  a:hover{border-bottom-color:var(--navy)}
+
+  /* 数据集卡片 */
+  .ds{background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:0;margin:18px 0;overflow:hidden}
+  .ds .hd{padding:16px 22px 14px;border-bottom:1px solid var(--line);background:#fbfcfd}
+  .ds .hd .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+  .ds .hd h3{margin:0;font-size:15px;font-weight:700;line-height:1.5}
+  .badge{font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:2px 8px;
+    border-radius:20px;flex:none}
+  .badge.a{background:var(--green-soft);color:var(--green);border:1px solid #cfe3d5}
+  .badge.b{background:var(--navy-soft);color:var(--navy)}
+  .badge.c{background:var(--accent-soft);color:var(--accent)}
+  .ds .hd .src{font-size:12px;color:var(--ink-3);margin-top:6px;line-height:1.7}
+  .ds .bd{padding:6px 22px 18px}
+  .ds .bd p{margin:11px 0;font-size:13.5px}
+  .kv{display:grid;grid-template-columns:86px 1fr;gap:2px 14px;font-size:13px;margin:10px 0}
+  .kv dt{font-size:11.5px;font-weight:700;color:var(--ink-3);padding-top:3px;letter-spacing:.03em}
+  .kv dd{margin:0;color:var(--ink-2);line-height:1.75}
+
+  /* 警告 */
+  .warn-box{background:var(--red-soft);border:1px solid #f0d5d5;border-left:3px solid var(--red);
+    border-radius:0 10px 10px 0;padding:14px 20px;margin:14px 0}
+  .warn-box .t{font-size:13.5px;font-weight:700;color:var(--red);margin:0 0 4px}
+  .warn-box p{margin:4px 0;font-size:13px;color:#6b3030;line-height:1.75}
+
+  .evidence{background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:18px 22px;margin:18px 0;border-top:3px solid var(--accent)}
+  .evidence .t{font-size:13.5px;font-weight:700;margin:0 0 8px}
+  .evidence table{font-size:12.5px;margin:10px 0 0}
+  .evidence .concl{font-size:13px;color:var(--ink-2);margin:12px 0 0;
+    padding-top:12px;border-top:1px dashed var(--line)}
+  .evidence .concl b{color:var(--accent)}
+
+  .note{font-size:12px;color:var(--ink-3);margin:9px 0 0;line-height:1.75}
+  footer{margin-top:58px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--ink-3);line-height:1.9}
+
+  @media (max-width:620px){
+    .wrap{padding:34px 18px 60px}
+    h1{font-size:23px}
+    .kv{grid-template-columns:1fr;gap:0}
+    .kv dt{margin-top:8px}
+    .verdict li{padding:13px 18px 13px 46px}
+    .verdict li::before{left:18px}
+  }
+  @media print{body{background:#fff}.wrap{padding:0}.ds,.evidence{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="kicker">Data Sources · 数据集清单</span>
+    <h1>高校毕业生就业数据统计分析<br>可用公开数据集核实报告</h1>
+    <p class="sub">逐条核实可下载性、字段结构与真实性。标注每个数据源的真实边界，以及哪些“数据集”其实是合成数据。</p>
+    <div class="meta">
+      <span>核实方式<b>逐页访问原始来源</b></span>
+      <span>数据时效<b>2024—2025 年为主</b></span>
+      <span>费用<b>全部免费</b></span>
+      <span>核实结果<b>6 个可用 / 3 个不可用</b></span>
+    </div>
+  </header>
+
+  <!-- ===== 结论 ===== -->
+  <h2><span class="num">01</span>先说结论</h2>
+  <div class="rule"></div>
+
+  <div class="verdict">
+    <ol>
+      <li><b>中国没有一份“高校毕业生个体级就业”的官方公开数据集。</b>教育部、人社部掌握毕业去向登记数据，但只发布汇总数字，不开放个体明细。任何声称“3 万条毕业生个体记录”的，都要先怀疑。</li>
+      <li><b>Kaggle 与国内社区上标“中国就业”的数据集，大部分是合成数据或印度场景。</b>本次核实中，一个被多篇博客引用的 Kaggle“China Job Market 2025”链接已经 404，说明存在盲传。</li>
+      <li><b>真实可用的路子只有三条</b>：官方聚合统计（国家统计局）、高校就业质量报告 PDF（自己解析）、招聘平台岗位数据（需求侧）。三者组合才能撑起你的分析框架。</li>
+    </ol>
+  </div>
+
+  <!-- ===== 总表 ===== -->
+  <h2><span class="num">02</span>数据集速查表</h2>
+  <div class="rule"></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th style="width:30px">#</th><th style="width:26%">数据集</th><th style="width:14%">时间</th><th style="width:13%">格式</th><th style="width:12%">开工难度</th><th>能回答什么问题</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><strong>2024 年城镇单位就业人员年平均工资</strong><br>国家统计局</td><td>2025.05 发布<br>（2024 年数据）</td><td>网页表格</td><td><span class="badge a">最低</span></td><td>行业间薪酬差距、区域差距、增速</td></tr>
+        <tr><td>2</td><td><strong>国家数据平台</strong><br>data.stats.gov.cn</td><td>持续更新</td><td>可导出<br>CSV/Excel</td><td><span class="badge a">低</span></td><td>分行业就业人员规模、逐年序列</td></tr>
+        <tr><td>3</td><td><strong>高校就业质量年度报告</strong><br>各校就业信息网</td><td>2025.01–02 发布<br>（2024 届）</td><td>PDF</td><td><span class="badge c">高</span></td><td>去向落实率、升学率、行业/地域流向</td></tr>
+        <tr><td>4</td><td><strong>大学生就业力调研报告</strong><br>智联招聘</td><td>2025</td><td>报告图表</td><td><span class="badge b">中</span></td><td>分学历/分专业 offer 率、毕业去向构成</td></tr>
+        <tr><td>5</td><td><strong>招聘数据集</strong><br>阿里云天池</td><td>2023.10</td><td>CSV 29MB</td><td><span class="badge a">低</span></td><td>岗位需求分布、城市/行业热度</td></tr>
+        <tr><td>6</td><td><strong>前程无忧数据分析岗位数据集</strong><br>和鲸社区</td><td>2022.03 采集</td><td>CSV 13MB</td><td><span class="badge a">低</span></td><td>岗位对学历/经验的要求分布、薪资区间</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">“开工难度”指从拿到数据到能跑出第一张图所需的工作量。PDF 类为“高”，是因为需要写解析；表格类为“低”，<code>pd.read_csv</code> 即可。</p>
+
+  <!-- ===== 详解 ===== -->
+  <h2><span class="num">03</span>逐个数据集详解</h2>
+  <div class="rule"></div>
+
+  <div class="ds">
+    <div class="hd">
+      <div class="row"><span class="badge a">推荐 · 省级基准</span><h3>数据集 1　2024 年城镇单位就业人员年平均工资</h3></div>
+      <div class="src">来源：国家统计局官网 → 统计数据 → 最新发布<br><a href="https://www.stats.gov.cn/sj/zxfb/202505/t20250516_1959826.html" target="_blank">stats.gov.cn/sj/zxfb/202505/t20250516_1959826.html</a></div>
+    </div>
+    <div class="bd">
+      <div class="kv">
+        <dt>发布机构</dt><dd>国家统计局（官方，权威性最高）</dd>
+        <dt>发布时间</dt><dd>2025 年 5 月 16 日，统计年度为 2024 年</dd>
+        <dt>费用 / 许可</dt><dd>免费公开，政府公开信息，注明来源即可引用</dd>
+        <dt>格式</dt><dd>网页表格，共 8 张表（表 1–表 8），可直接复制粘贴到 Excel</dd>
+      </div>
+      <p><strong>字段结构</strong>（三套表，维度不同）：</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:34%">表</th><th style="width:30%">分组维度</th><th>字段</th></tr></thead>
+          <tbody>
+            <tr><td>表 1–表 3<br>城镇<strong>非私营</strong>单位</td><td>分区域（东部/中部/西部/东北）<br>分行业门类（19 类）<br>分登记注册类型（内资/港澳台投资/外商投资）</td><td rowspan="2"><code>行业</code> / <code>2024年平均工资(元)</code> / <code>2023年平均工资(元)</code> / <code>名义增长率(%)</code></td></tr>
+            <tr><td>表 4–表 5<br>城镇<strong>私营</strong>单位</td><td>分区域、分行业门类</td></tr>
+            <tr><td>表 6–表 8<br><strong>规模以上企业</strong></td><td>分区域、分行业、分登记注册类型<br>另含分岗位（中层及以上管理 / 专业技术 / 办事人员 / 社会生产服务 / 生产制造）</td><td>同上，另加 <code>岗位类别</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>为什么这个数据集值得作为基石：</strong>它是唯一一个<strong>官方口径、行业分类标准统一、跨年连续</strong>的薪酬数据。你后面无论做什么结论，薪资维度都可以拿它当基准线去校准。</p>
+      <p><strong>局限（要写进报告）：</strong>统计对象是<strong>全体城镇单位就业人员</strong>，不是应届毕业生。用它只能做“行业间相对比较”，不能说“毕业生起薪是这个数”。</p>
+    </div>
+  </div>
+
+  <div class="ds">
+    <div class="hd">
+      <div class="row"><span class="badge a">推荐 · 可导出</span><h3>数据集 2　国家数据平台</h3></div>
+      <div class="src">来源：国家统计局数据发布平台<br><a href="https://data.stats.gov.cn/" target="_blank">data.stats.gov.cn</a></div>
+    </div>
+    <div class="bd">
+      <div class="kv">
+        <dt>内容</dt><dd>年度 / 季度 / 月度 / 分省 / 分行业多维数据库，含《中国统计年鉴》《中国劳动统计年鉴》电子版</dd>
+        <dt>导出</dt><dd>查询结果支持导出为 CSV / Excel，是<strong>唯一能拿到官方原始表格文件</strong>的免费渠道</dd>
+        <dt>推荐指标</dt><dd>“分行业城镇单位就业人员数”“分行业平均工资”“分省城镇单位就业人员数”</dd>
+      </div>
+      <p><strong>用法建议：</strong>在平台里按“行业 × 年份”拉出 3–5 年的序列，导出 CSV，导入 pandas。这一步就能生成你项目里第一张正式的<strong>行业就业容量趋势图</strong>，而且数据来源无懈可击。</p>
+      <p class="note">说明：该平台是交互式查询站点，没有“一键下载全库”的接口，需要按指标逐项查询后导出。这本身也是一个可以写进简历的细节——说明你熟悉官方数据渠道。</p>
+    </div>
+  </div>
+
+  <div class="ds">
+    <div class="hd">
+      <div class="row"><span class="badge c">主数据源 · 需解析</span><h3>数据集 3　高校《毕业生就业质量年度报告》（PDF）</h3></div>
+      <div class="src">来源：各高校就业信息网 / 信息公开网，2024 届报告集中在 2025 年 1–2 月发布<br>
+      实例：<a href="https://www.bsuc.edu.cn/info/1233/67289.htm" target="_blank">百色学院（2025-01-03 发布，附 PDF）</a>　
+      <a href="https://jy.masu.edu.cn/2025/0228/c1166a63825/page.htm" target="_blank">马鞍山学院（2025-02-28 发布）</a>　
+      <a href="https://zsxx.aiit.edu.cn/info/175971" target="_blank">安徽信息工程学院（第三方麦可思调研）</a></div>
+    </div>
+    <div class="bd">
+      <div class="kv">
+        <dt>发布依据</dt><dd>教育部办公厅《关于编制发布高校毕业生就业质量年度报告的通知》（教学厅函〔2013〕25 号），各校<strong>强制编制并公开</strong></dd>
+        <dt>数据来源</dt><dd>报告中的数据来自“全国高校毕业生毕业去向登记系统”＋第三方调研（多数委托麦可思）</dd>
+        <dt>格式</dt><dd>PDF，每份 2–4 MB，页数 30–60 页，图表为主</dd>
+        <dt>内容字段</dt><dd>总体毕业去向落实率、分学院/分专业落实率、升学率、出国率、行业流向占比、地域流向占比、单位性质分布、部分学校公开薪酬、用人单位评价</dd>
+      </div>
+
+      <p><strong>这是全项目最贴合主题、也是最费力的数据源。</strong>它同时具备两个特性：主题最对口，但需要写解析代码——而这恰好构成你项目里“数据采集”环节的实质内容。</p>
+
+      <div class="evidence">
+        <p class="t">证据：为什么“口径治理”必须是这个项目的核心环节</p>
+        <p>以青海大学公开的三份报告为例，同一所学校、连续三届：</p>
+        <table>
+          <thead><tr><th>届别</th><th>统计截止时点</th><th>毕业去向落实率</th></tr></thead>
+          <tbody>
+            <tr><td>2022 届</td><td>2022 年 8 月 31 日</td><td>90.03%</td></tr>
+            <tr><td>2023 届</td><td>2023 年 8 月 31 日</td><td>90.70%</td></tr>
+            <tr><td>2024 届</td><td>2024 年 <strong>11 月 24 日</strong></td><td><strong>79.9%</strong></td></tr>
+          </tbody>
+        </table>
+        <p class="concl">如果直接连线，结论会是“三年下降 10 个百分点”；但真实原因是<b>统计截止时间从 8 月底推到了 11 月底</b>，统计窗口变长、未落实人群被更充分地识别出来。这不是就业变差，是尺子变了。<br>——这一条写进报告，比任何漂亮图表都更能证明你懂数据。</p>
+      </div>
+
+      <p><strong>采集建议：</strong>不要一上来抓 50 所。先拿 <strong>3 所</strong>（建议选：1 所双一流、1 所普通本科、1 所高职）跑通“下载 → pdfplumber 提取 → 字段落表”全流程，确认解析可行性后再扩样本。高职院校的样本尤其重要，因为你是高职背景，而这类报告高职的公开率明显偏低——<strong>“公开率低”本身就是可报告的发现</strong>。</p>
+      <p class="note">注意：部分学校声明“未经允许不得转载引用”，做个人分析与作品集展示属于合理使用，但报告中应注明来源并避免大段复制原文。</p>
+    </div>
+  </div>
+
+  <div class="ds">
+    <div class="hd">
+      <div class="row"><span class="badge b">校验 · 宏观</span><h3>数据集 4　《大学生就业力调研报告》（智联招聘）</h3></div>
+      <div class="src">来源：智联招聘研究院，每年 3–4 月发布，官方公众号与新闻稿同步公开核心结论<br>
+      检索方式：微信搜索“智联招聘 大学生就业力调研报告”，或智联招聘官网“研究院”栏目</div>
+    </div>
+    <div class="bd">
+      <div class="kv">
+        <dt>性质</dt><dd>企业问卷调研，非政府统计。样本为数万份问卷，<strong>口径与教育部不一致</strong></dd>
+        <dt>格式</dt><dd>PDF 报告 + 公众号图文（内含完整数据表，可手工录入）</dd>
+        <dt>典型字段</dt><dd>毕业去向构成（单位就业 / 慢就业 / 自由职业 / 国内继续学习 / 创业 / 出国）、分学历 offer 获得率、分专业 offer 获得率、期望企业类型占比、签约城市等级分布、期望薪资</dd>
+      </div>
+      <p><strong>它对你的特殊价值：</strong>该系列报告的结论中，<strong>大专学历毕业生的 offer 获得率长期高于本科与硕博</strong>，且明确给出了原因分析（技能优势、就业预期调整更务实）。这与“学历越高越好就业”的常识相反，是一个<strong>天然的反直觉结论</strong>，非常适合作为你项目的核心发现之一，而且对你本人的求职叙事极其有利。</p>
+      <p><strong>使用方式：</strong>不要把它当主数据（它是聚合百分比，不是个体记录），而是当<strong>交叉验证源</strong>——当你的高校报告分析得出某个结构特征时，用它的调研数据做旁证。</p>
+      <p class="note">重要：该报告的“就业率”与高校报告的“毕业去向落实率”<strong>完全不是一个口径</strong>（前者约 55%，后者普遍 80%+）。两者绝不能放在同一张图里比较，这在报告里必须明确写出来。</p>
+    </div>
+  </div>
+
+  <div class="ds">
+    <div class="hd">
+      <div class="row"><span class="badge b">需求侧 · 可选</span><h3>数据集 5　招聘数据集（阿里云天池）</h3></div>
+      <div class="src"><a href="https://tianchi.aliyun.com/dataset/163746" target="_blank">tianchi.aliyun.com/dataset/163746</a></div>
+    </div>
+    <div class="bd">
+      <div class="kv">
+        <dt>发布者</dt><dd>天池用户“安静的AJ”，2023-10-19 上传</dd>
+        <dt>文件</dt><dd><code>数据分析.csv</code>（29.03 MB）、<code>可视化.xlsx</code>（3.14 MB）</dd>
+        <dt>许可</dt><dd>GPL 2.0（可自由使用）</dd>
+        <dt>字段</dt><dd>页面未提供字段说明，<strong>需下载后自行确认</strong>（这是它最大的缺陷）</dd>
+      </div>
+      <p><strong>用途：</strong>作为需求侧证据。用岗位数量与技能要求的分布，去对照毕业生流向，计算“需求—供给”的错配程度。</p>
+      <p><strong>风险提示：</strong>① 上传者未说明采集方式，数据来源不可完全溯源；② 时效为 2023 年；③ 字段不明可能白下载。建议<strong>先下载看前 20 行</strong>再决定是否纳入。</p>
+    </div>
+  </div>
+
+  <div class="ds">
+    <div class="hd">
+      <div class="row"><span class="badge b">需求侧 · 字段清晰</span><h3>数据集 6　前程无忧数据分析岗位数据集</h3></div>
+      <div class="src"><a href="https://www.heywhale.com/mw/dataset/62834c0dc08fe7829f219f1e" target="_blank">heywhale.com/mw/dataset/62834c0dc08fe7829f219f1e</a></div>
+    </div>
+    <div class="bd">
+      <div class="kv">
+        <dt>规模</dt><dd>12,438 行 × 11 列，13.0 MB，编码 <strong>GBK</strong>（读的时候要写 <code>encoding='gbk'</code>）</dd>
+        <dt>采集时间</dt><dd>2022 年 3 月 25–27 日，前程无忧网站，<strong>真实爬取、未经清洗</strong></dd>
+        <dt>覆盖范围</dt><dd>广州、北京、杭州等 12 个城市的数据分析类岗位</dd>
+        <dt>字段</dt><dd><code>城市</code> <code>招聘岗位</code> <code>薪资</code> <code>工作经验</code> <code>学历</code> <code>所招人数</code> <code>专业要求</code> <code>职位信息</code> <code>公司类型</code> <code>公司规模</code> <code>所属行业</code></dd>
+      </div>
+      <p><strong>六个里最适合“立刻开工”的一个：</strong>字段清晰、真实爬取、含“未清洗”的真实脏数据（薪资写成“10-15万/年”“1.8-3万/月”混排，需要清洗成数值——这正好是你展示数据清洗能力的素材）。</p>
+      <p><strong>用途：</strong>分析数据分析岗位对学历的要求分布（本科/硕士/不限各占多少），直接回答“专科学历在这一岗位赛道上的机会在哪”，对你自己求职有实际参考价值。</p>
+      <p><strong>局限：</strong>2022 年数据，时效偏旧；只有单个岗位类别。</p>
+    </div>
+  </div>
+
+  <!-- ===== 警告 ===== -->
+  <h2><span class="num">04</span>三个不要用的“数据集”</h2>
+  <div class="rule"></div>
+
+  <p>以下三个在搜索结果里排名靠前、看起来最贴合你的需求，但我核实后建议<strong>全部排除</strong>。理由写在下面，也建议你了解这套判断方法——面试时如果被问“你怎么选数据源”，这就是答案。</p>
+
+  <div class="warn-box">
+    <p class="t">① 和鲸社区《大学生毕业就业岗位选择与薪资匹配综合数据集》— 合成数据</p>
+    <p><a href="https://www.heywhale.com/mw/dataset/69ff3ffa3b286cf779b83a2a" target="_blank">heywhale.com/mw/dataset/69ff3ffa3b286cf779b83a2a</a>　30,000 行 × 17 列，字段看着完美：性别、专业、学历、毕业去向、就业行业、岗位类型、工作城市、城市等级、期望薪资、实际薪资、期望薪资达成率、是否有实习经历、专业-行业匹配度、学历-岗位匹配度、满意度评分。</p>
+    <p><strong>判断依据：</strong>期望薪资 8500 → 实际薪资 10400 → 达成率标 1.224（8500×1.224=10404）；7500→9200 标 1.227；6000→7500 标 1.25。<strong>每条记录的达成率都精确等于实际÷期望</strong>，一位小数不差；同时“专业”在 9 个值之间循环、“城市”在 8 个值之间循环、博士做自由职业的比例异常高。<strong>真实调查数据不可能出现这种数学上的完美闭环</strong>——这是生成脚本的痕迹。</p>
+    <p>用它做项目，面试官问“这批数据是怎么采集的、样本怎么抽的”时会立刻暴露。</p>
+  </div>
+
+  <div class="warn-box">
+    <p class="t">② Kaggle《Student Placement Prediction Dataset 2026》— 官方标注为合成，且是印度场景</p>
+    <p><a href="https://www.kaggle.com/datasets/sehaj1104/student-placement-prediction-dataset-2026" target="_blank">kaggle.com/datasets/sehaj1104/student-placement-prediction-dataset-2026</a></p>
+    <p>数据集说明页原文写着 “This is a <strong>synthetic dataset</strong> created for educational, research, and machine learning purposes”。字段是 <code>cgpa</code>（印度 10 分制绩点）、<code>salary_package_lpa</code>（LPA，印度年薪单位“十万卢比”）、<code>branch</code>（CSE/IT/ECE）。<strong>与中国高校毕业生就业毫无关系。</strong></p>
+  </div>
+
+  <div class="warn-box">
+    <p class="t">③ Kaggle《China Job Market 2025 Dataset》— 链接已失效，但仍在被传播</p>
+    <p>搜索时发现至少两个站点（含一个 GitHub 课程项目 README）引用了 <code>kaggle.com/datasets/kundanbedmutha/china-job-market-2025-dataset</code>，但我实际访问返回 “We can't find that page”。<strong>即该数据集当前不可获取</strong>，引用它的博客属于盲传。</p>
+    <p>这条单独列出来，是想说明：<strong>看到“2025”“China”“就业”几个关键词就采信，是数据工作里的典型陷阱。</strong></p>
+  </div>
+
+  <!-- ===== 推荐 ===== -->
+  <h2><span class="num">05</span>推荐组合与开工顺序</h2>
+  <div class="rule"></div>
+
+  <p>你不必全用。按下面的顺序推进，每一阶段都能独立产出成果，做不完也不至于全盘落空。</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th style="width:56px">阶段</th><th style="width:30%">用哪份数据</th><th style="width:20%">产出</th><th>验收标准</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>第 1 天</strong><br>打通链路</td>
+          <td>数据集 6（前程无忧岗位，CSV）</td>
+          <td>薪资字段清洗 + 学历要求分布图</td>
+          <td>能把“10-15万/年”“1.8-3万/月”统一成月薪中位数，出一张条形图</td>
+        </tr>
+        <tr>
+          <td><strong>第 2–3 天</strong><br>建立基准</td>
+          <td>数据集 1 + 2（国家统计局）</td>
+          <td>19 个行业薪酬基准表 + 三年趋势图</td>
+          <td>能说清“哪些行业薪酬高且增速快”，引用的每个数都有出处链接</td>
+        </tr>
+        <tr>
+          <td><strong>第 4–10 天</strong><br>主数据采集</td>
+          <td>数据集 3（3 所高校 PDF 试点，再扩到 20–30 所）</td>
+          <td>指标宽表 + 口径映射字典</td>
+          <td>每条记录可回溯到具体 PDF 页码；口径字段齐全</td>
+        </tr>
+        <tr>
+          <td><strong>第 11 天起</strong><br>分析与输出</td>
+          <td>数据集合（3 为主，1/2 做基准，4 做校验）</td>
+          <td>四象限图、桑基图、结构变迁图 → HTML 报告</td>
+          <td>每个结论都能指回具体数据切片</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-size:15px;margin:26px 0 6px">如果时间紧张，走这个简化版</h3>
+  <p>放弃解析 PDF，只用 <strong>数据集 1 + 2 + 6</strong>（全部是表格数据，<code>read_csv</code> 就能用），把主题微调为：</p>
+  <div style="background:#fff;border:1px solid var(--line);border-left:3px solid var(--navy);border-radius:0 10px 10px 0;padding:15px 20px;margin:14px 0;font-size:14px;color:var(--ink-2)">
+    <strong>「数据分析岗位的市场需求与薪酬结构分析」</strong><br>
+    以岗位需求侧数据为主、以官方行业工资为基准，回答“这个岗位在哪些城市需求大、对学历要求如何、薪资区间怎样”。<br>
+    <span style="font-size:12.5px;color:var(--ink-3)">优点：数据全部现成、当天可开工、结论直接服务于你本人求职。缺点：脱离了“高校毕业生”这个主题框架。</span>
+  </div>
+
+  <footer>
+    本清单所有结论均基于对原始来源页面的实际访问核实（2026 年 10 月 26 日）。数据集的可获取性会随时间变化，正式使用前请再次确认链接有效性。<br>
+    引用官方统计与高校报告时请注明来源；使用招聘平台数据时请遵守平台服务条款，不用于商业用途或再分发。
+  </footer>
+
+</div>
+<style>
+#back-home{position:fixed;right:24px;bottom:24px;z-index:9999;
+  display:inline-flex;align-items:center;gap:7px;
+  background:#1e3f6b;color:#fff;text-decoration:none;
+  font:600 13px/1 "Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  padding:11px 17px;border-radius:999px;letter-spacing:.02em;
+  box-shadow:0 4px 16px rgba(30,63,107,.28);
+  transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+#back-home:hover{transform:translateY(-2px);background:#265083;
+  box-shadow:0 8px 24px rgba(30,63,107,.36)}
+#back-home .ar{font-size:14px;line-height:1;opacity:.85}
+@media print{#back-home{display:none}}
+@media (max-width:600px){#back-home{right:14px;bottom:14px;padding:10px 14px;font-size:12px}}
+</style>
+<a href="index.html" id="back-home" title="返回作品集首页"><span class="ar">&#8592;</span>作品集首页</a>
+</body>
+</html>

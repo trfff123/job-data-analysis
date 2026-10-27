@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>谭茹方 · 数据分析作品集</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231e3f6b'/%3E%3Crect x='8' y='17' width='4' height='8' fill='%23ffffff'/%3E%3Crect x='14' y='12' width='4' height='13' fill='%23ffffff'/%3E%3Crect x='20' y='7' width='4' height='18' fill='%23b45309'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --ink:#161b26; --ink-2:#4a5568; --ink-3:#8a94a6;
+    --line:#e4e8ef; --bg:#f6f7f9; --card:#fff;
+    --accent:#b45309; --accent-soft:#fdf6f1;
+    --navy:#1e3f6b; --navy-soft:#eef2f9;
+    --green:#166534;
+    --mono:ui-monospace,"SF Mono",Consolas,"Courier New",monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.8 "Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:56px 34px 70px}
+
+  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;
+    padding-bottom:26px;border-bottom:1px solid var(--line)}
+  .kicker{font-size:11.5px;font-weight:700;letter-spacing:.14em;color:var(--accent)}
+  h1{font-size:31px;line-height:1.32;letter-spacing:-.6px;margin:12px 0 0;font-weight:700}
+  h1 .thin{color:var(--ink-3);font-weight:400}
+  .tagline{color:var(--ink-2);font-size:14.5px;margin:12px 0 0;max-width:600px}
+  .contact{text-align:right;font-size:12.5px;color:var(--ink-3);line-height:2;flex:none;padding-top:6px}
+  .contact b{display:block;color:var(--ink);font-size:13.5px;font-weight:600;margin-bottom:2px}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:30px 0 0}
+  .stats div{background:#fff;padding:18px 20px}
+  .stats .v{font-size:23px;font-weight:700;color:var(--navy);letter-spacing:-.5px;
+    font-family:var(--mono);line-height:1.3}
+  .stats .k{font-size:11.5px;color:var(--ink-3);margin-top:3px;letter-spacing:.03em}
+
+  h2{font-size:13px;font-weight:700;letter-spacing:.13em;color:var(--ink-3);
+    margin:50px 0 6px;text-transform:uppercase}
+  .h2note{font-size:12.5px;color:var(--ink-3);margin:0 0 14px;line-height:1.75}
+
+  .hero{display:block;background:#fff;border:1px solid #d5dfec;border-radius:14px;
+    padding:26px 30px;margin:14px 0 0;text-decoration:none;color:inherit;
+    box-shadow:0 2px 10px rgba(30,63,107,.05);transition:border-color .18s,box-shadow .18s,transform .18s;
+    position:relative}
+  .hero:hover{border-color:#b9cbe2;box-shadow:0 8px 26px rgba(30,63,107,.11);transform:translateY(-2px)}
+  .hero .badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.08em;
+    background:var(--navy);color:#fff;padding:2.5px 9px;border-radius:5px;margin-bottom:10px}
+  .hero .name{font-size:20px;font-weight:700;line-height:1.5;letter-spacing:-.2px}
+  .hero .desc{font-size:13.6px;color:var(--ink-2);margin:10px 0 0;line-height:1.85;max-width:800px}
+  .hero .chips{margin-top:14px}
+  .hero .go{position:absolute;right:26px;top:26px;font-size:12px;color:var(--ink-3);
+    font-family:var(--mono);transition:color .18s}
+  .hero:hover .go{color:var(--accent)}
+  .hero .out{display:flex;flex-wrap:wrap;gap:22px;margin-top:16px;padding-top:14px;
+    border-top:1px solid var(--line);font-size:12px;color:var(--ink-3)}
+  .hero .out b{color:var(--ink);font-weight:600;font-family:var(--mono);font-size:13px}
+
+  .proj{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:20px 24px;margin:0 0 12px;text-decoration:none;color:inherit;
+    transition:border-color .18s,box-shadow .18s,transform .18s;position:relative}
+  .proj:hover{border-color:#c3cede;box-shadow:0 6px 22px rgba(30,63,107,.09);transform:translateY(-2px)}
+  .proj .row1{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .proj .idx{font-family:var(--mono);font-size:11.5px;color:var(--accent);font-weight:700;flex:none}
+  .proj .name{font-size:15.5px;font-weight:700;line-height:1.5}
+  .proj .desc{font-size:13.1px;color:var(--ink-2);margin:8px 0 0;line-height:1.8}
+  .proj .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+  .chip{font-size:11px;color:#3d4a5c;background:#f1f4f9;border:1px solid #e2e8f0;
+    padding:2.5px 9px;border-radius:5px;letter-spacing:.02em}
+  .chip.hl{background:var(--navy-soft);border-color:#d5e0ef;color:var(--navy);font-weight:600}
+  .proj .go{position:absolute;right:22px;top:20px;font-size:12px;color:var(--ink-3);
+    font-family:var(--mono);transition:color .18s}
+  .proj:hover .go{color:var(--accent)}
+
+  .skills{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .skill{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .skill .t{font-size:12.5px;font-weight:700;color:var(--navy);letter-spacing:.04em;
+    padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+  .skill ul{margin:0;padding:0;list-style:none;font-size:12.8px;color:var(--ink-2);line-height:2}
+  .skill li::before{content:"·";color:var(--accent);font-weight:700;margin-right:8px}
+
+  .note{background:#fff;border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:0 10px 10px 0;padding:16px 22px;margin:26px 0 0}
+  .note .t{font-size:13.5px;font-weight:700;margin:0 0 6px;color:var(--ink)}
+  .note p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.85}
+
+  .foot{margin-top:46px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+  @media (max-width:760px){
+    .wrap{padding:36px 20px 56px}
+    .top{flex-direction:column}
+    .contact{text-align:left}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .skills{grid-template-columns:1fr}
+    h1{font-size:25px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div>
+      <div class="kicker">DATA ANALYSIS PORTFOLIO</div>
+      <h1>谭茹方 <span class="thin">/ 数据分析 · 数据治理</span></h1>
+      <p class="tagline">大数据技术专业。关注数据从采集到结论的完整链路，尤其在意「数据能不能用」这件事——它决定了结论该说到哪一步为止。</p>
+    </div>
+    <div class="contact">
+      <b>四川财经职业学院</b>
+      大数据技术 · 2027 届<br>
+      求职方向：川渝 · 数据采集 / 治理 / 分析
+    </div>
+  </div>
+
+  <div class="stats">
+    <div><div class="v">30,000</div><div class="k">原始数据记录</div></div>
+    <div><div class="v">28</div><div class="k">清洗后字段数</div></div>
+    <div><div class="v">9</div><div class="k">数据可信度检验项</div></div>
+    <div><div class="v">8</div><div class="k">分析图表</div></div>
+  </div>
+
+  <h2>主项目</h2>
+
+  <a class="hero" href="report-graduate-employment.html">
+    <div class="go">OPEN →</div>
+    <span class="badge">完整项目报告</span>
+    <div class="name">高校毕业生就业数据统计分析</div>
+    <p class="desc">从数据源核验到业务结论的完整链路：9 项数据可信度检验、7 步清洗流水线、5 个维度探索分析、8 张决策级图表，最终输出 5 条可执行结论。核心不是「画几张图」，而是回答一个能指导行动的问题——<strong>在学历、专业、行业、城市、匹配度与实习六个变量里，哪些在毕业前根本改不了，哪些还来得及</strong>。结论：学历、行业、城市的作用量级接近，专业被明显高估，而匹配度与实习是唯一还能动手的部分，两者叠加可达 31%。</p>
+    <div class="chips">
+      <span class="chip hl">pandas</span><span class="chip hl">matplotlib</span>
+      <span class="chip">口径治理</span><span class="chip">效应量分析</span><span class="chip">数据质量诊断</span>
+    </div>
+    <div class="out">
+      <span>样本规模 <b>30,000 × 17</b></span>
+      <span>分析口径 <b>11,274 条</b></span>
+      <span>业务结论 <b>5 条</b></span>
+      <span>图表 <b>8 张</b></span>
+      <span>正文 <b>约 2.6 万字</b></span>
+    </div>
+  </a>
+
+  <h2>支撑文档</h2>
+  <p class="h2note">同一套分析的拆解材料：可视化设计、清洗与 EDA 过程、立项方案、数据源核验，以及一份同数据不同视角的延伸分析。可单独阅读，也可作为主报告的过程材料。</p>
+
+  <a class="proj" href="visualization-design.html">
+    <div class="go">OPEN →</div>
+    <div class="row1"><span class="idx">01</span><span class="name">可视化方案与业务结论</span></div>
+    <p class="desc">4 张决策图的完整设计过程：为什么用置信区间而不是只画均值、为什么剔除样本不足的类目、为什么放弃双轴气泡图。每张图配「怎么看 / 说明什么 / 面试怎么答」三层解读。</p>
+    <div class="chips">
+      <span class="chip hl">图表设计</span><span class="chip">置信区间</span><span class="chip">小样本处理</span>
+    </div>
+  </a>
+
+  <a class="proj" href="data-cleaning-eda.html">
+    <div class="go">OPEN →</div>
+    <div class="row1"><span class="idx">02</span><span class="name">数据清洗与 EDA 分析报告</span></div>
+    <p class="desc">7 步清洗流水线（去重、缺失、异常、类型转换、字段标准化），逐步记录影响条数；5 个维度的探索性分析。含 9 项数据真实性检验的完整推导过程。</p>
+    <div class="chips">
+      <span class="chip hl">pandas 清洗</span><span class="chip">异常值只标不删</span><span class="chip">η² 效应量</span>
+    </div>
+  </a>
+
+  <a class="proj" href="data-sources-audit.html">
+    <div class="go">OPEN →</div>
+    <div class="row1"><span class="idx">03</span><span class="name">数据源核实清单</span></div>
+    <p class="desc">逐个核实候选数据集的真实性与字段，标注 6 个可用源与 3 个必须排除的源。含一个典型的口径陷阱：某高校连续三届落实率从 90.03% 降到 79.9%，真实原因是统计截止时点从 8 月底推到了 11 月底。</p>
+    <div class="chips">
+      <span class="chip hl">数据源核实</span><span class="chip">合成数据识别</span><span class="chip">口径陷阱</span>
+    </div>
+  </a>
+
+  <a class="proj" href="project-charter.html">
+    <div class="go">OPEN →</div>
+    <div class="row1"><span class="idx">04</span><span class="name">项目立项方案</span></div>
+    <p class="desc">项目以「高校毕业生就业」为题立项。这份文档定义了业务问题、技术链路、三类数据源与 7 条局限性，其中「口径必须隔离」与「薪酬只能相对比较、不能输出绝对值」两条，在后续分析中都被完整验证。</p>
+    <div class="chips">
+      <span class="chip hl">业务问题定义</span><span class="chip">技术链路</span><span class="chip">局限性说明</span>
+    </div>
+  </a>
+
+  <a class="proj" href="job-posting-analysis.html">
+    <div class="go">OPEN →</div>
+    <div class="row1"><span class="idx">05</span><span class="name">延伸分析 · 大数据招聘岗位视角</span></div>
+    <p class="desc">同一份数据的另一种切法：把分析单位从「毕业生」换成「岗位」，回答「技术类岗位到底有没有溢价」。全量口径下技术岗溢价 24.8%。文档保留了一次重要的纠错——最初在「薪资最高的 18 个岗位」里比较，溢价被压缩到 5.4%，原因是低薪岗位已被预先筛掉。</p>
+    <div class="chips">
+      <span class="chip hl">分析视角切换</span><span class="chip">样本选择偏差</span><span class="chip">口径对照</span>
+    </div>
+  </a>
+
+  <h2>能力矩阵</h2>
+  <div class="skills">
+    <div class="skill">
+      <div class="t">数据处理</div>
+      <ul>
+        <li>pandas 清洗流水线设计</li>
+        <li>缺失 / 异常 / 重复值处理</li>
+        <li>字段标准化与实体归一</li>
+        <li>编码与格式兼容处理</li>
+      </ul>
+    </div>
+    <div class="skill">
+      <div class="t">分析建模</div>
+      <ul>
+        <li>描述统计与分组对比</li>
+        <li>交叉分析与相关性检验</li>
+        <li>效应量（η²）与置信区间</li>
+        <li>数据质量与真实性诊断</li>
+      </ul>
+    </div>
+    <div class="skill">
+      <div class="t">表达与交付</div>
+      <ul>
+        <li>matplotlib 可视化设计</li>
+        <li>图表的业务解读</li>
+        <li>分析报告撰写</li>
+        <li>口径与局限的书面说明</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="t">关于这个项目的数据</div>
+    <p>本项目使用公开合成数据集。我在分析前做了 9 项真实性检验，确认它不具备现实代表性，因此所有结论只停留在方法层与结构层，具体数值不外推。把这件事写进报告不是减分项——<strong>面试官在意的往往不是用了什么数据，而是会不会怀疑数据。</strong></p>
+  </div>
+
+  <div class="foot">
+    <span>谭茹方 · 数据分析作品集</span>
+    <span>共 6 个文档 · 最后更新 2026-10-26</span>
+  </div>
+
+</div>
+</body>
+</html>
